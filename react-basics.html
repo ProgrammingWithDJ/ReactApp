@@ -5,14 +5,44 @@
   </head>
   <body>
     <div class="js-container"></div>
-<script src="https://unpkg.com/supersimpledev@3.2.1/external-library.js"></script>
-    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+     <script src="https://unpkg.com/supersimpledev/react.js"></script>
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
 
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
     <script type="text/babel">
+      var tshirt = 8;
+      var quantity = 2;
+      var socks = 10;
+      var shipping = 5;
+
+      var productCost = socks + (tshirt * quantity);
+      var totalCost = productCost + shipping;
+
+      var currentday = dayjs().format('MMMM D');
+      var currentTime = dayjs().format('hh:mm ss');
+      const divElement = (
+        <div>
+          
+          <p>Product cost is ${productCost}</p>
+         <p> Shipping cost is ${shipping}</p>
+          <p>Total cost is ${totalCost}</p>
+          <p>Order placed on: {currentday}</p>
+          <p>Order placed at: {currentTime}</p>
+           <button>Place your order!</button>
+        </div>
+      );
+
+setInterval(() => {
+            var currentTime = dayjs().format('hh:mm ss');
+        <p>Order placed at: {currentTime}</p>;
+        root.render(divElement);
+      }, 1000);
+
       const container = document.querySelector('.js-container');
-      ReactDOM.createRoot(container).render('Welcome to SuperSimpleDev React Course');
+     const root = ReactDOM.createRoot(container);
+     
+     root.render(divElement);
     </script>
   </body>
 </html>
