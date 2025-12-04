@@ -79,11 +79,18 @@
           setInputText("");
         }
 
+        function exampleFunction() {
+          setInputText("Alice");
+        }
+
         return (
           <div className="button-container">
             <MainFunction inputText={inputText} setInputText={setInputText} />
             <button className="reset" onClick={handleReset}>
               Reset
+            </button>
+              <button onClick={exampleFunction}>
+              Example
             </button>
           </div>
         );
