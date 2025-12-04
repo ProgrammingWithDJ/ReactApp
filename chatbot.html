@@ -26,6 +26,8 @@
               id: chatMessages.length + 1,
             },
           ]);
+
+          setInputText('');
         }
 
         return (
@@ -35,6 +37,7 @@
               placeholder="Send a message to Chatbot.."
               size="30"
               onChange={saveInputText}
+              value={inputText}
             />
             <button onClick={sendMessage}>Send</button>
           </>
