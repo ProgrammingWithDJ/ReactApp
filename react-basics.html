@@ -1,55 +1,95 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>React Basics</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      button {
+        margin: 5px;
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      button.reset {
+        background-color: #dc3545;
+      }
+      button.reset:hover {
+        background-color: #c82333;
+      }
+      .button-container {
+        margin-bottom: 20px;
+      }
+    </style>
   </head>
   <body>
     <div class="js-container"></div>
+
     <script src="https://unpkg.com/supersimpledev/react.js"></script>
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+
     <script type="text/babel">
       function MainFunction({ count, setCount }) {
-        console.log('Main function called');
+        console.log('MainFunction rendered');
 
-        function ButtonClicked() {
+        function handleClick() {
           setCount(count + 1);
         }
 
-        const countedText = count === 1 ? "Time" : "Times";
+        const label = count === 1 ? 'Time' : 'Times';
 
         return (
-          <>
-            <button onClick={ButtonClicked}>Clicked {count} {countedText}</button>
-          </>
+          <button onClick={handleClick}>
+            Button 1: Clicked {count} {label}
+          </button>
         );
       }
 
       function MainFunction2({ count, setCount }) {
-        console.log('Main function2 called');
+        console.log('MainFunction2 rendered');
 
-        function Button2Clicked() {
+        function handleClick() {
           setCount(count + 1);
         }
 
-        const counted2Text = count === 1 ? "Time" : "Times";
+        const label = count === 1 ? 'Time' : 'Times';
 
         return (
-          <>
-            <button onClick={Button2Clicked}>Clicked {count} {counted2Text}</button>
-          </>
+          <button onClick={handleClick}>
+            Button 2: Clicked {count} {label}
+          </button>
         );
       }
 
       function ParentFunction() {
-        console.log('Parent function called');
+        console.log('ParentFunction rendered');
         const [count, setCount] = React.useState(0);
+
+        function handleReset() {
+          setCount(0);
+        }
+
         return (
-          <>
+          <div className="button-container">
             <MainFunction count={count} setCount={setCount} />
             <MainFunction2 count={count} setCount={setCount} />
-          </>
+            <button className="reset" onClick={handleReset}>
+              Reset
+            </button>
+          </div>
         );
       }
 
