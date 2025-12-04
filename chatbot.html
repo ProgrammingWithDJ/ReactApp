@@ -50,22 +50,22 @@
           {
             message: "Hello ChatBot",
             sender: "user",
-            Id: 1,
+              id: 1,
           },
           {
             message: "How Can I help you?",
             sender: "robot",
-            Id: 2,
+              id: 2,
           },
           {
             message: "What is your name?",
             sender: "user",
-            Id: 3,
+              id: 3,
           },
           {
             message: "Tell me a joke!",
             sender: "robot",
-            Id: 4,
+              id: 4,
           },
         ];
 
@@ -73,10 +73,10 @@
           <>
             {chatMessages.map((chatMessage) => {
               return (
-                <ChatMessages
+                <ChatMessage
                   message={chatMessage.message}
                   sender={chatMessage.sender}
-                  key={chatMessage.Id}
+                  key={chatMessage.id}
                 />
               );
             })}
