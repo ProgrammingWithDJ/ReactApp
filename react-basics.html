@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
     <script type="text/babel">
-      function MainFunction([count, setCount]) {
+      function MainFunction({ count, setCount }) {
         console.log('Main function called');
 
         function ButtonClicked() {
@@ -26,9 +26,9 @@
         );
       }
 
-      function MainFunction2([count, setCount]) {
+      function MainFunction2({ count, setCount }) {
         console.log('Main function2 called');
-      
+
         function Button2Clicked() {
           setCount(count + 1);
         }
@@ -44,15 +44,11 @@
 
       function ParentFunction() {
         console.log('Parent function called');
-          const [count, setCount] = React.useState(0);
+        const [count, setCount] = React.useState(0);
         return (
           <>
-            <MainFunction 
-            count = count
-            setCount = setCount/>
-            <MainFunction2 
-              count = {count}
-            setCount = {setCount}/>
+            <MainFunction count={count} setCount={setCount} />
+            <MainFunction2 count={count} setCount={setCount} />
           </>
         );
       }
