@@ -24,7 +24,7 @@
         );
       }
 
-      function ChatMessages({ message, sender }) {
+      function ChatMessage({ message, sender }) {
         // const {message,sender} = props;
 
         /*   if (propsSender === 'robot') {
@@ -87,15 +87,7 @@
         return (
           <>
             <ChatInput />
-            {chatMessages.map((chatMessage) => {
-              return (
-                <ChatMessages
-                  message={chatMessage.message}
-                  sender={chatMessage.sender}
-                  key={chatMessage.Id}
-                />
-              );
-            })}
+            <ChatMessages />
           </>
         );
       }
