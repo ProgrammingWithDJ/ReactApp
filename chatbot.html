@@ -69,8 +69,19 @@
           },
         ];
 
+
+        function sendMessage() {
+          chatMessages.push({
+            message: "This is a new message",
+            sender: "user",
+            id: chatMessages.length + 1,
+          });
+
+          console.log("Messages after sending a new one:", chatMessages);
+        }
         return (
           <>
+          <button onClick={sendMessage}>Send Messages</button>
             {chatMessages.map((chatMessage) => {
               return (
                 <ChatMessage
