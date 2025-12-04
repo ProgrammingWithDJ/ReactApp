@@ -45,26 +45,45 @@
         );
       }
 
-      function App() {
+      function ChatMessages() {
         const chatMessages = [
           {
             message: "Hello ChatBot",
             sender: "user",
+            Id: 1,
           },
           {
             message: "How Can I help you?",
             sender: "robot",
+            Id: 2,
           },
           {
             message: "What is your name?",
             sender: "user",
+            Id: 3,
           },
           {
             message: "Tell me a joke!",
             sender: "robot",
+            Id: 4,
           },
         ];
 
+        return (
+          <>
+            {chatMessages.map((chatMessage) => {
+              return (
+                <ChatMessages
+                  message={chatMessage.message}
+                  sender={chatMessage.sender}
+                  key={chatMessage.Id}
+                />
+              );
+            })}
+          </>
+        );
+      }
+      function App() {
         return (
           <>
             <ChatInput />
@@ -73,6 +92,7 @@
                 <ChatMessages
                   message={chatMessage.message}
                   sender={chatMessage.sender}
+                  key={chatMessage.Id}
                 />
               );
             })}
