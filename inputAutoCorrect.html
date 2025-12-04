@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Basics</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      button {
+        margin: 5px;
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      button.reset {
+        background-color: #dc3545;
+      }
+      button.reset:hover {
+        background-color: #c82333;
+      }
+      .button-container {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+
+    <script type="text/babel">
+      function MainFunction({ inputText, setInputText }) {
+        console.log('MainFunction rendered');
+      console.log('Input Text:', saveInputText);
+      console.log('Set Input Text Function:', setInputText);
+function saveInputText(event) {
+          setInputText(event.target.value);
+        }
+
+        return (
+            <>
+         <input type="text"  value={inputText}   onChange={saveInputText} />
+         <p> Hello : {saveInputText}</p>
+         </>
+        );
+      }
+
+    //   function MainFunction2({ count, setCount }) {
+    //     console.log('MainFunction2 rendered');
+
+    //     function handleClick() {
+    //       setCount(count + 1);
+    //     }
+
+    //     const label = count === 1 ? 'Time' : 'Times';
+
+    //     return (
+    //       <button onClick={handleClick}>
+    //         Button 2: Clicked {count} {label}
+    //       </button>
+    //     );
+    //   }
+
+      function ParentFunction() {
+        console.log('ParentFunction rendered');
+       const [inputText, setInputText] = React.useState("");
+
+        function handleReset() {
+          setInputText("");
+        }
+
+        return (
+          <div className="button-container">
+            <MainFunction count={inputText} setCount={setInputText} />
+            <button className="reset" onClick={handleReset}>
+              Reset
+            </button>
+          </div>
+        );
+      }
+
+      const container = document.querySelector('.js-container');
+      const root = ReactDOM.createRoot(container);
+      root.render(<ParentFunction />);
+    </script>
+  </body>
+</html>
