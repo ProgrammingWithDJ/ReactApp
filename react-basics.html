@@ -10,39 +10,25 @@
 
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
-    <script type="text/babel">
-      var tshirt = 8;
-      var quantity = 2;
-      var socks = 10;
-      var shipping = 5;
+       <script type="text/babel">
+      function MainFunction() {
+        console.log('Main function called');
+        const [count, setCount] = React.useState(0);
 
-      var productCost = socks + (tshirt * quantity);
-      var totalCost = productCost + shipping;
+        function ButtonClicked() {
+          setCount(count + 1);
+        }
 
-      var currentday = dayjs().format('MMMM D');
-      var currentTime = dayjs().format('hh:mm ss');
-      const divElement = (
-        <div>
-          
-          <p>Product cost is ${productCost}</p>
-         <p> Shipping cost is ${shipping}</p>
-          <p>Total cost is ${totalCost}</p>
-          <p>Order placed on: {currentday}</p>
-          <p>Order placed at: {currentTime}</p>
-           <button>Place your order!</button>
-        </div>
-      );
-
-setInterval(() => {
-            var currentTime = dayjs().format('hh:mm ss');
-        <p>Order placed at: {currentTime}</p>;
-        root.render(divElement);
-      }, 1000);
+        return (
+          <>
+            <button onClick={ButtonClicked}>Clicked {count} times</button>
+          </>
+        );
+      }
 
       const container = document.querySelector('.js-container');
-     const root = ReactDOM.createRoot(container);
-     
-     root.render(divElement);
+      const root = ReactDOM.createRoot(container);
+      root.render(<MainFunction />);
     </script>
   </body>
 </html>
