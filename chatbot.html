@@ -49,6 +49,14 @@
               type="text"
               placeholder="Send a message to Chatbot.."
               size="30"
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  sendMessage();
+                }
+                if (event.key === "Escape") {
+                  setInputText("");
+                }
+              }}
               onChange={saveInputText}
               value={inputText}
             />
