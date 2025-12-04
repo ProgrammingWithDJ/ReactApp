@@ -5,32 +5,62 @@
   </head>
   <body>
     <div class="js-container"></div>
-     <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
 
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
     <script type="text/babel">
-     
-     function ChatInput() {
-       return (
-         <>
-           <input type="text" placeholder="Send a message to Chatbot.."  size= "30"/>
-           <button>Send</button>
-         </>
-       );
-        }
-
-       const app = (
+      function ChatInput() {
+        return (
           <>
-        <ChatInput />
+            <input
+              type="text"
+              placeholder="Send a message to Chatbot.."
+              size="30"
+            />
+            <button>Send</button>
           </>
-       );
-       
-      const container = document.querySelector('.js-container');
-     const root = ReactDOM.createRoot(container);
-     root.render(app);
+        );
+      }
 
+      function ChatMessages({ message, sender }) {
+        // const {message,sender} = props;
+
+        /*   if (propsSender === 'robot') {
+        return (
+            <div>
+          
+            <img src="AI.jpg" width="50" />
+              {propsMessage}
+          </div>
+        );
+           } */
+        return (
+          <div>
+            {sender === "robot" && <img src="AI.jpg" width="50" />}
+            {message}
+            {sender === "user" && <img src="BlankUser.jpg" width="50" />}
+          </div>
+        );
+      }
+
+      function App() {
+        return (
+  <>
+              <ChatInput />
+              <ChatMessages message="Hello ChatBot" sender="user" />
+              <ChatMessages message="How Can I help you?" sender="robot" />
+              <ChatMessages message="What is your name?" sender="user" />
+              <ChatMessages message="Tell me a joke!" sender="robot" />
+            </>
+        );
+      }
+    
+
+      const container = document.querySelector(".js-container");
+      const root = ReactDOM.createRoot(container);
+      root.render(<App/>);
     </script>
   </body>
 </html>
