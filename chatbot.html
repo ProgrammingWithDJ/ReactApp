@@ -2,6 +2,8 @@
 <html>
   <head>
     <title>Chat Bot</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -23,6 +25,10 @@
         border: 1px solid #ccc;
         border-radius: 4px;
       }
+      input:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
       button {
         padding: 10px 20px;
         background-color: #007bff;
@@ -31,7 +37,11 @@
         border-radius: 4px;
         cursor: pointer;
       }
-      button:hover {
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      button:hover:enabled {
         background-color: #0056b3;
       }
       .messages {
@@ -41,6 +51,7 @@
         height: 400px;
         overflow-y: auto;
         margin-bottom: 10px;
+        background: #fff;
       }
       .message {
         display: flex;
@@ -48,7 +59,7 @@
         gap: 10px;
         margin-bottom: 10px;
         padding: 10px;
-        border-radius: 4px;
+        border-radius: 8px;
       }
       .message.user {
         background-color: #e3f2fd;
@@ -61,59 +72,67 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
+        object-fit: cover;
+      }
+      .message span {
+        word-break: break-word;
+        max-width: 100%;
       }
     </style>
   </head>
   <body>
     <div class="js-container"></div>
+
     <script src="https://unpkg.com/supersimpledev/react.js"></script>
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
     <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+
     <script type="text/babel">
       function ChatInput({ chatMessages, setChatMessages }) {
         const [inputText, setInputText] = React.useState("");
+        const [isLoading, setIsLoading] = React.useState(false);
 
-        function saveInputText(event) {
-          setInputText(event.target.value);
+        function saveInputText(e) {
+          setInputText(e.target.value);
         }
 
         async function sendMessage() {
-          if (!inputText.trim()) return;
+          if (isLoading) return;
+          const text = inputText.trim();
+          if (!text) return;
 
-          const newChatMessages = [
-            ...chatMessages,
-            {
-              message: inputText,
-              sender: "user",
-              id: Date.now() + Math.random(),
-            },
-          ];
+          setIsLoading(true);
 
-          setChatMessages(newChatMessages);
+          // Add user message immediately
+          const userMsg = {
+            message: text,
+            sender: "user",
+            id: Date.now() + Math.random(),
+          };
+          setChatMessages((prev) => [...prev, userMsg]);
           setInputText("");
 
           try {
-            const response = await Chatbot.getResponseAsync(inputText);
-            setChatMessages([
-              ...newChatMessages,
-              {
-                message: response || "Sorry, I didn't understand that.",
-                sender: "robot",
-                id: Date.now() + Math.random(),
-              },
-            ]);
-          } catch (error) {
-            console.error("Error getting response:", error);
-            setChatMessages([
-              ...newChatMessages,
-              {
-                message: "Error: Unable to get response. Please try again.",
-                sender: "robot",
-                id: Date.now() + Math.random(),
-              },
-            ]);
+            // await async response (Chatbot.getResponseAsync provided by chatbot.js)
+            const response = await Chatbot.getResponseAsync(text);
+            const botMsg = {
+              message: response || "Sorry, I didn't understand that.",
+              sender: "robot",
+              id: Date.now() + Math.random(),
+            };
+            setChatMessages((prev) => [...prev, botMsg]);
+          } catch (err) {
+            console.error("Chatbot error:", err);
+            const errMsg = {
+              message: "Error: Unable to get response. Please try again.",
+              sender: "robot",
+              id: Date.now() + Math.random(),
+            };
+            setChatMessages((prev) => [...prev, errMsg]);
+          } finally {
+            setIsLoading(false);
           }
         }
 
@@ -124,16 +143,19 @@
               placeholder="Send a message to Chatbot.."
               value={inputText}
               onChange={saveInputText}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  sendMessage();
-                }
-                if (event.key === "Escape") {
-                  setInputText("");
-                }
+              onKeyDown={(e) => {
+                if (e.key === "Enter") sendMessage();
+                if (e.key === "Escape") setInputText("");
               }}
+              disabled={isLoading}
             />
-            <button onClick={sendMessage}>Send</button>
+            <button
+              onClick={sendMessage}
+              disabled={isLoading || !inputText.trim()}
+              aria-disabled={isLoading || !inputText.trim()}
+            >
+              {isLoading ? "Sending..." : "Send"}
+            </button>
           </div>
         );
       }
@@ -142,68 +164,47 @@
         return (
           <div className={`message ${sender}`}>
             {sender === "robot" && (
-              <img src="AI.jpg" width="50" alt="AI Avatar" />
+              <img src="AI.jpg" width="50" alt="AI avatar" />
             )}
             <span>{message}</span>
             {sender === "user" && (
-              <img src="BlankUser.jpg" width="50" alt="User Avatar" />
+              <img src="BlankUser.jpg" width="50" alt="User avatar" />
             )}
           </div>
         );
       }
 
       function ChatMessages({ chatMessages }) {
-        const messagesEndRef = React.useRef(null);
+        const endRef = React.useRef(null);
 
         React.useEffect(() => {
-          messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+          endRef.current?.scrollIntoView({ behavior: "smooth" });
         }, [chatMessages]);
 
         return (
-          <div className="messages">
-            {chatMessages.map((chatMessage) => (
+          <div className="messages" role="log" aria-live="polite">
+            {chatMessages.map((m) => (
               <ChatMessage
-                message={chatMessage.message}
-                sender={chatMessage.sender}
-                key={chatMessage.id}
+                key={m.id}
+                message={m.message}
+                sender={m.sender}
               />
             ))}
-            <div ref={messagesEndRef} />
+            <div ref={endRef} />
           </div>
         );
       }
 
       function App() {
         const [chatMessages, setChatMessages] = React.useState([
-          {
-            message: "Hello ChatBot",
-            sender: "user",
-            id: 1,
-          },
-          {
-            message: "How Can I help you?",
-            sender: "robot",
-            id: 2,
-          },
-          {
-            message: "What is your name?",
-            sender: "user",
-            id: 3,
-          },
-          {
-            message: "Tell me a joke!",
-            sender: "robot",
-            id: 4,
-          },
+          { message: "Hello ChatBot", sender: "user", id: 1 },
+          { message: "How can I help you?", sender: "robot", id: 2 },
         ]);
 
         return (
-          <div className="chat-container">
+          <div className="chat-container" aria-label="Chat application">
             <ChatMessages chatMessages={chatMessages} />
-            <ChatInput
-              chatMessages={chatMessages}
-              setChatMessages={setChatMessages}
-            />
+            <ChatInput chatMessages={chatMessages} setChatMessages={setChatMessages} />
           </div>
         );
       }
