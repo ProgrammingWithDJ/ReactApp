@@ -3,7 +3,7 @@ import Chatbot from 'supersimpledev'
 
 
 
-function ChatInput({ setChatMessages }) {
+export function ChatInput({ setChatMessages }) {
         const [inputText, setInputText] = useState("");
         const [isLoading, setIsLoading] = useState(false);
 
