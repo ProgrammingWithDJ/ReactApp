@@ -1,0 +1,23 @@
+{
+  "name": "react-course",
+  "version": "1.0.0",
+  "main": "react-basics.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ProgrammingWithDJ/ReactApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ProgrammingWithDJ/ReactApp/issues"
+  },
+  "homepage": "https://github.com/ProgrammingWithDJ/ReactApp#readme",
+  "description": "",
+  "dependencies": {
+    "supersimpledev": "^8.6.4"
+  }
+}
