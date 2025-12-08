@@ -21,3 +21,5 @@ export function ChatMessages({ chatMessages }) {
           </div>
         );
       }
+
+      export default ChatMessages;
