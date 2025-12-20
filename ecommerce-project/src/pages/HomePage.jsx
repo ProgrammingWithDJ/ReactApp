@@ -1,17 +1,21 @@
 import './HomePage.css';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { Header } from '../Components/Header.jsx';
 import { products } from '../../starting-code/ecommerce-project-main/data/products.js'
 
 export function HomePage() {
 
-    axios.get('http://localhost:3000/api/products')
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+         axios.get('http://localhost:3000/api/products')
     .then((response) => { 
         console.Log(response.data);
-    })
-    .catch((error) => {
-        console.error('Error fetching products:', error);
-    }); 
+    },
+
+ []);
+
     return (
         <>
             <title>E Commerce Project</title>
