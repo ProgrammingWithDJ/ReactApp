@@ -2,7 +2,6 @@ import './HomePage.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Header } from '../Components/Header.jsx';
-import { products } from '../../starting-code/ecommerce-project-main/data/products.js'
 
 export function HomePage() {
 
@@ -12,9 +11,8 @@ export function HomePage() {
          axios.get('http://localhost:3000/api/products')
     .then((response) => { 
         setProducts(response.data);
-    },
-
- []);
+    }, [])
+});
 
     return (
         <>
