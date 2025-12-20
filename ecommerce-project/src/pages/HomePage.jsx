@@ -6,6 +6,7 @@ import { Header } from '../Components/Header.jsx';
 export function HomePage() {
 
     const [products, setProducts] = useState([]);
+    const [cart, setCartItems] = useState([]);
 
     useEffect(() => {
          axios.get('http://localhost:3000/api/products')
@@ -14,10 +15,17 @@ export function HomePage() {
     }, [])
 });
 
+   useEffect(() => {
+         axios.get('http://localhost:3000/api/cart-items')
+    .then((response) => { 
+        setCartItems(response.data);
+    }, [])
+});
+
     return (
         <>
             <title>E Commerce Project</title>
-            <Header />
+            <Header cart={cart} />
             <link rel="icon" type="image/png" href="/home-favicon.png" />
             <div className="home-page">
                 <div className="products-grid">
