@@ -9,12 +9,14 @@ export function HomePage({ cart }) {
     const [products, setProducts] = useState([]);
    
 
-    useEffect(() => {
-         axios.get('/api/products')
+useEffect(() => {
+  axios.get('/api/products')
     .then((response) => { 
-        setProducts(response.data);
-    }, [])
-});
+      setProducts(response.data);
+    })
+    .catch(console.error);
+}, []);  // Proper semicolon + empty array
+
 
 
     return (
