@@ -72,7 +72,8 @@ export function CheckoutPage({ cart }) {
                                                     name= {`delivery-option-${cartitem.productId}`} />
                                                 <div>
                                                     <div className="delivery-option-date">
-                                                        {dayjs.extend(deliveryOption.estimatedDeliveryTime).format('dddd, MMMM D')}
+                                                       {dayjs(deliveryOption.estimatedDeliveryTime).format('dddd, MMMM D')}
+
                                                     </div>
                                                     <div className="delivery-option-price">
                                                        { deliveryOption.priceCents === 0 ? 'FREE Shipping' : formatMoney(deliveryOption.priceCents) }
