@@ -34,7 +34,7 @@ useEffect(() => {
         fetchCheckoutdata();
 
     }, [cart]);
-    
+
     return (
         <>
             <title>Checkout</title>
@@ -46,7 +46,7 @@ useEffect(() => {
                 <div className="checkout-grid">
                     <OrderSummary cart={cart} deliveryOptions={deliveryOptions} loadCartItems={loadCartItems} />
 
-                    <PaymentSummary paymentSummary={paymentSummary} />
+                    <PaymentSummary paymentSummary={paymentSummary} loadCartItems={loadCartItems} />
                 </div>
             </div>
         </>
