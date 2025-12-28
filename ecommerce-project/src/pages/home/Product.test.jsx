@@ -1,6 +1,11 @@
 import { it, expect, describe, vi } from 'vitest';
 import { Product } from './Product.jsx';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import axios from 'axios';
+
+
+vi.mock('axios');
 
 describe('Product component', () => {
   it('Displays the product details correctly', () => {
@@ -42,8 +47,16 @@ describe('Product component', () => {
 
     render(<Product product={product} loadCartItems={loadCartItems} />);
 
-    const addToCartButton = screen.getByText('Add to Cart');
-    // Add assertion here:
-    expect(addToCartButton).toBeInTheDocument();
+    const user = await userEvent.setup();
+    const addToCartButton = screen.getByTestId('add-to-cart-button');
+    await user.click(addToCartButton);
+
+    expect(axios.post).toHaveBeenCalledWith('/api/cart-items', {
+      productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+      quantity: 1
+    });
+
+    expect(loadCartItems).toHaveBeenCalled();
+
   });
 });
