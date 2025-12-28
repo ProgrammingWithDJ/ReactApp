@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { DeliveryOptions } from "./DeliveryOptions.jsx";
 import { CartItemsDetails } from "./CartItemsDetails.jsx";
 
-export function OrderSummary({ cart = [], deliveryOptions = [] }) {
+export function OrderSummary({ cart = [], deliveryOptions = [], loadCartItems }) {
   const hasData = Array.isArray(deliveryOptions) && deliveryOptions.length > 0;
 
   return (
@@ -40,6 +40,7 @@ export function OrderSummary({ cart = [], deliveryOptions = [] }) {
                 <DeliveryOptions
                   deliveryOptions={deliveryOptions}
                   cartitem={cartitem}
+                  loadCartItems={loadCartItems}
                 />
               </div>
             </div>

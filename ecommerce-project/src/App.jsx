@@ -24,7 +24,7 @@ useEffect(() => {
   return (
    <Routes>
     <Route index element={<HomePage cart={cart} loadCartItems={loadCartItems}/>} />
-     <Route path='/checkout' element={<CheckoutPage cart={cart}/>} />
+     <Route path='/checkout' element={<CheckoutPage cart={cart} loadCartItems={loadCartItems}/>} />
     <Route path='/orders' element={<OrdersPage cart={cart}/>} />
     <Route path='/tracking' element={<TrackingPage/>}/>
     <Route path='*' element={<NotFound/>}/>
