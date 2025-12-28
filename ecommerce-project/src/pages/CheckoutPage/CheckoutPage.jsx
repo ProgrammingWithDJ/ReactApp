@@ -2,8 +2,8 @@ import './CheckoutPage.css';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { CheckoutHeader } from './CheckoutHeader.jsx';
-import { formatMoney } from '../../utils/money.js';
-import dayjs from 'dayjs';
+import { PaymentSummary } from './PaymentSummary.jsx';
+import { OrderSummary } from './OrderSummary.jsx';
 
 export function CheckoutPage({ cart }) {
     const [deliveryOptions, setDeliveryOptions] = useState([]);
@@ -12,20 +12,17 @@ export function CheckoutPage({ cart }) {
 
 
     useEffect(() => {
-        axios
-            .get('/api/delivery-options?expand=estimatedDeliveryTime')
-            .then((response) => {
-                setDeliveryOptions(response.data || []);
-            });
 
-        axios
-            .get('/api/payment-summary')
-            .then((response) => {
-                setPaymentSummary(response.data);
-            })
-            .catch((error) => {
-                console.error('Failed to fetch delivery options', error);
-            });
+        var fetchCheckoutdata = async () => {
+            let response = await axios.get('/api/delivery-options?expand=estimatedDeliveryTime');
+            setDeliveryOptions(response.data || []);
+
+            response = await axios.get('/api/payment-summary');
+            setPaymentSummary(response.data);
+        };
+
+        fetchCheckoutdata();
+
     }, []);
 
     return (
@@ -37,150 +34,9 @@ export function CheckoutPage({ cart }) {
                 <div className="page-title">Review your order</div>
 
                 <div className="checkout-grid">
-                    <div className="order-summary">
-                        {/* Wait until delivery options are loaded */}
-                        {deliveryOptions.length > 0 &&
-                            cart.map((cartitem) => {
-                                const selectedDeliveryOption = deliveryOptions.find(
-                                    (deliveryOption) => deliveryOption.id === cartitem.deliveryOptionId
-                                );
+                    <OrderSummary cart={cart} deliveryOptions={deliveryOptions} />
 
-                                const deliveryDate = selectedDeliveryOption
-                                    ? dayjs(selectedDeliveryOption.estimatedDeliveryTimeMs).format('dddd, MMMM D')
-                                    : 'Choose a delivery option';
-
-                                return (
-                                    <div
-                                        key={cartitem.productId}
-                                        className="cart-item-container"
-                                    >
-                                        <div className="delivery-date">
-                                            Delivery Date : {deliveryDate}
-                                        </div>
-
-                                        <div className="cart-item-details-grid">
-                                            <img
-                                                className="product-image"
-                                                src={cartitem.product.image}
-                                                alt={cartitem.product.name}
-                                            />
-
-                                            <div className="cart-item-details">
-                                                <div className="product-name">
-                                                    {cartitem.product.name}
-                                                </div>
-                                                <div className="product-price">
-                                                    {formatMoney(cartitem.product.priceCents)}
-                                                </div>
-                                                <div className="product-quantity">
-                                                    <span>
-                                                        Quantity:{' '}
-                                                        <span className="quantity-label">
-                                                            {cartitem.quantity}
-                                                        </span>
-                                                    </span>
-                                                    <span className="update-quantity-link link-primary">
-                                                        Update
-                                                    </span>
-                                                    <span className="delete-quantity-link link-primary">
-                                                        Delete
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div className="delivery-options">
-                                                <div className="delivery-options-title">
-                                                    Choose a delivery option:
-                                                </div>
-
-                                                {deliveryOptions.map((deliveryOption) => {
-                                                    const priceString =
-                                                        deliveryOption.priceCents === 0
-                                                            ? 'FREE Shipping'
-                                                            : `${formatMoney(
-                                                                deliveryOption.priceCents
-                                                            )} Shipping`;
-
-                                                    return (
-                                                        <div
-                                                            key={deliveryOption.id}
-                                                            className="delivery-option"
-                                                        >
-                                                            <input
-                                                                type="radio"
-                                                                className="delivery-option-input"
-                                                                name={`delivery-option-${cartitem.productId}`}
-                                                                defaultChecked={
-                                                                    deliveryOption.id ===
-                                                                    cartitem.deliveryOptionId
-                                                                }
-                                                            />
-                                                            <div>
-                                                                <div className="delivery-option-date">
-                                                                    {dayjs(
-                                                                        deliveryOption.estimatedDeliveryTime
-                                                                    ).format('dddd, MMMM D')}
-                                                                </div>
-                                                                <div className="delivery-option-price">
-                                                                    {priceString}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                    </div>
-
-                    <div className="payment-summary">
-                        <div className="payment-summary-title">
-                            Payment Summary
-                        </div>
-
-                        {paymentSummary && (
-                            <>
-                                <div className="payment-summary-row">
-                                    <div>Items ({paymentSummary.totalItems}):</div>
-                                    <div className="payment-summary-money">$42.75</div>
-                                </div>
-
-                                <div className="payment-summary-row">
-                                    <div>Shipping &amp; handling:</div>
-                                    <div className="payment-summary-money">
-                                        {formatMoney(paymentSummary.shippingCostCents)}
-                                    </div>
-                                </div>
-
-                                <div className="payment-summary-row subtotal-row">
-                                    <div>Total before tax:</div>
-                                    <div className="payment-summary-money">
-                                        {formatMoney(paymentSummary.totalCostBeforeTaxCents)}</div>
-                                </div>
-
-                                <div className="payment-summary-row">
-                                    <div>Estimated tax (10%):</div>
-                                    <div className="payment-summary-money">
-                                        {formatMoney(paymentSummary.taxCents)}
-                                    </div>
-                                </div>
-
-                                <div className="payment-summary-row total-row">
-                                    <div>Order total:</div>
-                                    <div className="payment-summary-money">
-                                        {formatMoney(paymentSummary.totalCostCents)}
-                                    </div>
-                                </div>
-
-                                <button className="place-order-button button-primary">
-                                    Place your order
-                                </button>
-                            </>
-                        )}
-
-                    </div>
+                    <PaymentSummary paymentSummary={paymentSummary} />
                 </div>
             </div>
         </>
