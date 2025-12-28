@@ -150,7 +150,7 @@ export function CheckoutPage({ cart }) {
                                 <div className="payment-summary-row">
                                     <div>Shipping &amp; handling:</div>
                                     <div className="payment-summary-money">
-                                        {formatMoney(paymentSummary.shippingCostsCents)}
+                                        {formatMoney(paymentSummary.shippingCostCents)}
                                     </div>
                                 </div>
 
