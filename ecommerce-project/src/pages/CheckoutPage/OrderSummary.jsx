@@ -35,7 +35,7 @@ export function OrderSummary({ cart = [], deliveryOptions = [], loadCartItems })
                   alt={cartitem.product.name}
                 />
 
-                <CartItemsDetails cartitem={cartitem} />
+                <CartItemsDetails cartitem={cartitem} loadCartItems={loadCartItems} />
 
                 <DeliveryOptions
                   deliveryOptions={deliveryOptions}
